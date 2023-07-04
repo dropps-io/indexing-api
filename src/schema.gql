@@ -1,0 +1,376 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type WrappedTxParameterEntity {
+  """The value of the parameter."""
+  value: String!
+
+  """The name of the parameter."""
+  name: String!
+
+  """The type of the parameter."""
+  type: String!
+
+  """The position of the parameter in the method signature."""
+  position: String!
+}
+
+type WrappedTxEntity {
+  """The transaction hash of the wrapped transaction."""
+  transactionHash: String!
+
+  """The block number of the transaction."""
+  blockNumber: Float!
+
+  """The address from where this wrapped transaction is emitted."""
+  from: String!
+
+  """The address to where this wrapped transaction is executed."""
+  to: String!
+
+  """The value (in native token) contained in the wrapped transaction."""
+  value: String!
+
+  """The method id of the wrapped transaction."""
+  methodId: String!
+
+  """The method name of the wrapped transaction."""
+  methodName: String
+
+  """An array of the parameters of the wrapped transaction."""
+  wrappedTxParameters: [WrappedTxParameterEntity]!
+
+  """An array of wrapped transactions contained in the wrapped transaction."""
+  wrappedTxEntities: [WrappedTxEntity]!
+  parameters: [WrappedTxParameterEntity!]!
+}
+
+type MethodParameterEntity {
+  """The name of the method parameter"""
+  name: String!
+
+  """The type of the method parameter"""
+  type: String!
+
+  """
+  Whether the method parameter is indexed or not (apply only for parameters of method type event)
+  """
+  indexed: Boolean!
+
+  """
+  Position of the parameter in the method signature (e.g. in someMethod(uint param1,uint param2), param2 has position 2)
+  """
+  position: Float!
+}
+
+type MethodEntity {
+  """The method id (first 8 bytes of the hash)"""
+  id: ID!
+
+  """The hash of the method."""
+  hash: String!
+
+  """The name of the method."""
+  name: String!
+
+  """The type of the method."""
+  type: String!
+
+  """An array of parameters associated with the method."""
+  parameters: [MethodParameterEntity]!
+}
+
+type MetadataImageEntity {
+  """The URL of the image."""
+  url: String!
+
+  """The width of the image in pixels."""
+  width: Float!
+
+  """The height of the image in pixels."""
+  height: Float!
+
+  """The type of the image: profile, background, etc."""
+  type: String
+
+  """The unique keccak hash of the image content."""
+  hash: String!
+}
+
+type MetadataAssetEntity {
+  """The URL of the asset."""
+  url: String!
+
+  """The file type of the asset, such as "application/pdf", etc."""
+  fileType: String!
+
+  """The unique hash of the asset content."""
+  hash: String!
+}
+
+type MetadataLinkEntity {
+  """The title of the related link."""
+  title: String!
+
+  """The URL of the related link."""
+  url: String!
+}
+
+type AddressEntity {
+  """The unique address associated with the entity."""
+  address: ID!
+
+  """The interface code, such as ERC721, ERC1155, etc."""
+  interfaceCode: String
+
+  """The version of the interface."""
+  interfaceVersion: String
+
+  """The type of the contract. E.g. asset, collection, profile, etc."""
+  type: String
+
+  """The name of the entity."""
+  name: String
+
+  """The symbol of the entity, typically a short-form name or abbreviation."""
+  symbol: String
+
+  """A description of the entity."""
+  description: String
+
+  """Indicates whether the entity is a non-fungible token (NFT)."""
+  isNFT: Boolean
+
+  """An array of images associated with the entity."""
+  images(type: String): [MetadataImageEntity]!
+
+  """An array of tags that categorize or describe the entity."""
+  tags: [String]!
+
+  """An array of related links with titles and URLs."""
+  links: [MetadataLinkEntity]!
+
+  """An array of assets associated with the entity."""
+  assets(fileType: String): [MetadataAssetEntity]!
+}
+
+type TokenHolderEntity {
+  """The address associated with the token contract."""
+  contractAddress: String!
+
+  """The address associated with the token holder."""
+  holderAddress: String!
+
+  """The token id associated with the token."""
+  tokenId: String
+
+  """The balance owned by the holder, in eth or unit."""
+  balanceInEth: Float!
+
+  """The balance owned by the holder, in wei or unit."""
+  balanceInWei: String!
+
+  """The block since when the holder held the token."""
+  holderSinceBlock: Float!
+
+  """The details of the holder address."""
+  holderAddressDetails: AddressEntity
+
+  """The details of the token address."""
+  tokenAddressDetails: AddressEntity
+}
+
+type TokenHolderPagination {
+  """Count of the total number of items available"""
+  count: Int!
+
+  """Current page number."""
+  page: Int!
+
+  """Amount of results available in one page."""
+  pageLength: Int!
+
+  """Total of pages available."""
+  totalPages: Int!
+
+  """Array with the results."""
+  results: [TokenHolderEntity!]
+}
+
+type AddressPagination {
+  """Count of the total number of items available"""
+  count: Int!
+
+  """Current page number."""
+  page: Int!
+
+  """Amount of results available in one page."""
+  pageLength: Int!
+
+  """Total of pages available."""
+  totalPages: Int!
+
+  """Array with the results."""
+  results: [AddressEntity!]
+}
+
+type CollectionTokenEntity {
+  """The unique address associated with the entity."""
+  address: ID!
+
+  """The token id associated with the entity."""
+  tokenId: String
+
+  """The decoded version of the token id associated with the entity."""
+  decodedTokenId: String
+
+  """The balance owned of the entity."""
+  balance: Float
+
+  """The interface code, such as ERC721, ERC1155, etc."""
+  interfaceCode: String!
+
+  """The version of the interface."""
+  interfaceVersion: String
+
+  """The name of the entity."""
+  name: String
+
+  """The symbol of the entity, typically a short-form name or abbreviation."""
+  symbol: String
+
+  """A description of the entity."""
+  description: String
+
+  """The name of the asset collection."""
+  collectionName: String
+
+  """
+  The symbol of the asset collection, typically a short-form name or abbreviation.
+  """
+  collectionSymbol: String
+
+  """A description of the asset collection."""
+  collectionDescription: String
+
+  """Indicates whether the entity is a non-fungible token (NFT)."""
+  isNFT: Boolean!
+
+  """Address of the latest know token owner."""
+  latestKnownOwner: String
+
+  """An array of images associated with the entity."""
+  images: [MetadataImageEntity]!
+
+  """An array of related links with titles and URLs."""
+  links: [MetadataLinkEntity]!
+
+  """An array of assets associated with the entity."""
+  assets: [MetadataAssetEntity]!
+}
+
+type CollectionTokensPagination {
+  """Count of the total number of items available"""
+  count: Int!
+
+  """Current page number."""
+  page: Int!
+
+  """Amount of results available in one page."""
+  pageLength: Int!
+
+  """Total of pages available."""
+  totalPages: Int!
+
+  """Array with the results."""
+  results: [CollectionTokenEntity!]
+}
+
+type Query {
+  address(
+    """The search input, can be a complete or incomplete name, address"""
+    input: String
+
+    """The type of the contract. E.g. asset, collection, profile, etc."""
+    type: String
+
+    """The interface code, such as ERC721, ERC1155, etc."""
+    interfaceCode: String
+
+    """The version of the interface."""
+    interfaceVersion: String
+
+    """Specific tag to look for."""
+    tag: String
+
+    """Address that should have permissions on that contract."""
+    havePermissions: String
+
+    """The page number to query."""
+    page: Int = 1
+  ): AddressPagination!
+  method(id: String!): MethodEntity
+  wrappedTransactions(transactionHash: String!, methodId: String): [WrappedTxEntity]!
+  collectionTokens(
+    """
+    The search input, can be a complete or incomplete name, tokenId, decodedTokenId
+    """
+    input: String
+
+    """The address search input, can be a complete or incomplete"""
+    addressInput: String
+
+    """The interface code, such as ERC721, ERC1155, etc."""
+    interfaceCode: String
+
+    """The version of the interface."""
+    interfaceVersion: String
+
+    """The name of the collection."""
+    collectionName: String
+
+    """The symbol of the collection."""
+    collectionSymbol: String
+
+    """Indicates whether the entity is a non-fungible token (NFT)."""
+    isNFT: Boolean
+
+    """The address that should have ownership over the asset."""
+    owner: String
+
+    """The page number to query."""
+    page: Int = 1
+  ): CollectionTokensPagination!
+  tokenHolders(
+    """The address of the holder"""
+    holderAddress: String
+
+    """The address of the token contract"""
+    contractAddress: String
+
+    """The token ID of the token"""
+    tokenId: String
+
+    """
+    The minimum amount of tokens to be held by the holder (in eth or in units)
+    """
+    minBalance: Int
+
+    """
+    The maximum amount of tokens to be held by the holder (in eth or in units)
+    """
+    maxBalance: Int
+
+    """The block number after which the holder has started to hold the tokens"""
+    holderAfterBlock: Int
+
+    """
+    The block number before which the holder has started to hold the tokens
+    """
+    holderBeforeBlock: Int
+
+    """The page number to query."""
+    page: Int = 1
+  ): TokenHolderPagination!
+}

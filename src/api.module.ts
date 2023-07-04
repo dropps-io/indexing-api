@@ -1,0 +1,30 @@
+import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+
+import { HealthController } from './health.controller';
+import { WrappedTxModule } from './resolvers/wrapped-tx/wrapped-tx.module';
+import { MethodModule } from './resolvers/method/method.module';
+import { TokenHolderModule } from './resolvers/token-holder/token-holder.module';
+import { AddressModule } from './resolvers/address/address.module';
+import { CollectionTokenModule } from './resolvers/collection-token/collection-token.module';
+
+@Module({
+  imports: [
+    AddressModule,
+    MethodModule,
+    WrappedTxModule,
+    CollectionTokenModule,
+    TokenHolderModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      driver: ApolloDriver,
+      playground: true,
+      introspection: true,
+    }),
+  ],
+  controllers: [HealthController],
+  providers: [],
+})
+export class ApiModule {}

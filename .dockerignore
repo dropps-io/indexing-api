@@ -1,0 +1,10 @@
+*.log
+*.md
+*.yml
+.vscode
+.idea
+.github
+node_modules
+test
+docs
+dockerfile
