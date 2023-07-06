@@ -729,7 +729,7 @@ export class LuksoDataDbService implements OnModuleDestroy {
       `SELECT * FROM ${DB_DATA_TABLE.CONTRACT} 
               INNER JOIN ${DB_DATA_TABLE.METADATA} 
               ON ${DB_DATA_TABLE.CONTRACT}.address = ${DB_DATA_TABLE.METADATA}.address
-              WHERE  ${DB_DATA_TABLE.CONTRACT}."address" = $1`,
+              WHERE  ${DB_DATA_TABLE.CONTRACT}."address" = $1 AND ${DB_DATA_TABLE.METADATA}."tokenId" IS NULL`,
       [address],
     );
     return rows.length > 0 ? rows[0] : null;
@@ -804,8 +804,8 @@ export class LuksoDataDbService implements OnModuleDestroy {
         DB_DATA_TABLE.METADATA,
         `${DB_DATA_TABLE.CONTRACT}.address`,
         `${DB_DATA_TABLE.METADATA}.address`,
-      );
-
+      )
+      .whereRaw(`${DB_DATA_TABLE.METADATA}."tokenId" IS NULL`);
     if (input && isPartialEthereumAddress(input))
       query.whereRaw(`LOWER(${DB_DATA_TABLE.CONTRACT}.address) LIKE LOWER(?)`, [`%${input}%`]);
     else if (input)
