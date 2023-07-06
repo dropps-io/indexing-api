@@ -27,7 +27,6 @@ describe('LuksoStructureDbService', () => {
   });
 
   afterEach(async () => {
-    // make sure to close the connections to the database
     await service.disconnect();
   });
 
@@ -75,7 +74,7 @@ describe('LuksoStructureDbService', () => {
       await service.insertErc725ySchema(TEST_ERC725Y[0].schema);
 
       const fetchedSchema = await service.getErc725ySchemaByKey(TEST_ERC725Y[0].schema.key);
-      expect(fetchedSchema).toEqual(TEST_ERC725Y[0].schema);
+      expect(fetchedSchema).toEqual({ ...TEST_ERC725Y[0].schema, createdAt: expect.any(Date) });
     });
   });
 
@@ -106,9 +105,10 @@ describe('LuksoStructureDbService', () => {
 
       const fetchedContractInterfaces = await service.getContractInterfaces();
 
+      // The cache do not save the createdAt date
       expect(fetchedContractInterfaces).toEqual([
-        TEST_CONTRACT_INTERFACE[0],
-        TEST_CONTRACT_INTERFACE[1],
+        { ...TEST_CONTRACT_INTERFACE[0], createdAt: expect.any(Date) },
+        { ...TEST_CONTRACT_INTERFACE[1] },
       ]);
     });
   });
@@ -136,7 +136,10 @@ describe('LuksoStructureDbService', () => {
       );
 
       // As DB is empty, it will be true only if the cache is used
-      expect(contractInterface).toEqual(TEST_CONTRACT_INTERFACE[1]);
+      expect(contractInterface).toEqual({
+        ...TEST_CONTRACT_INTERFACE[1],
+        createdAt: expect.any(Date),
+      });
     });
   });
 
@@ -147,8 +150,8 @@ describe('LuksoStructureDbService', () => {
 
       const fetchedContractInterfaces = await service.getContractInterfaces();
       expect(fetchedContractInterfaces).toEqual([
-        TEST_CONTRACT_INTERFACE[0],
-        TEST_CONTRACT_INTERFACE[1],
+        { ...TEST_CONTRACT_INTERFACE[0], createdAt: expect.any(Date) },
+        { ...TEST_CONTRACT_INTERFACE[1], createdAt: expect.any(Date) },
       ]);
     });
 
@@ -166,8 +169,8 @@ describe('LuksoStructureDbService', () => {
 
       // As DB is empty, it will be true only if the cache is used
       expect(fetchedContractInterfaces).toEqual([
-        TEST_CONTRACT_INTERFACE[0],
-        TEST_CONTRACT_INTERFACE[1],
+        { ...TEST_CONTRACT_INTERFACE[0], createdAt: expect.any(Date) },
+        { ...TEST_CONTRACT_INTERFACE[1], createdAt: expect.any(Date) },
       ]);
     });
 
@@ -184,7 +187,10 @@ describe('LuksoStructureDbService', () => {
       const fetchedMethodInterface = await service.getMethodInterfaceById(
         TEST_STRUCTURE_METHODS[0].interface.id,
       );
-      expect(fetchedMethodInterface).toEqual(TEST_STRUCTURE_METHODS[0].interface);
+      expect(fetchedMethodInterface).toEqual({
+        ...TEST_STRUCTURE_METHODS[0].interface,
+        createdAt: expect.any(Date),
+      });
     });
   });
 

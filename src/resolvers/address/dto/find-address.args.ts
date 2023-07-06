@@ -12,7 +12,7 @@ export class FindAddressArgs {
 
   @Field(() => String, {
     nullable: true,
-    description: 'The type of the contract. E.g. asset, collection, profile, etc.',
+    description: 'The type of the contract. E.g. asset, contract, profile, etc.',
   })
   type?: CONTRACT_TYPE;
 

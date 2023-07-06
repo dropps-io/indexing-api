@@ -5,11 +5,11 @@ export class MetadataImageEntity {
   @Field(() => String, { description: 'The URL of the image.' })
   url: string;
 
-  @Field(() => Number, { description: 'The width of the image in pixels.' })
-  width: number;
+  @Field(() => Number, { nullable: true, description: 'The width of the image in pixels.' })
+  width: number | null;
 
-  @Field(() => Number, { description: 'The height of the image in pixels.' })
-  height: number;
+  @Field(() => Number, { nullable: true, description: 'The height of the image in pixels.' })
+  height: number | null;
 
   @Field(() => String, {
     nullable: true,

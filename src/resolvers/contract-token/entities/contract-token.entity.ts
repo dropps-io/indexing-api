@@ -7,7 +7,7 @@ import {
 } from '../../../entities/metadata.entity';
 
 @ObjectType()
-export class CollectionTokenEntity {
+export class ContractTokenEntity {
   @Field(() => ID, {
     nullable: false,
     description: 'The unique address associated with the entity.',
@@ -64,21 +64,21 @@ export class CollectionTokenEntity {
 
   @Field(() => String, {
     nullable: true,
-    description: 'The name of the asset collection.',
+    description: 'The name of the asset contract.',
   })
-  collectionName: string | null;
+  contractName: string | null;
 
   @Field(() => String, {
     nullable: true,
-    description: 'The symbol of the asset collection, typically a short-form name or abbreviation.',
+    description: 'The symbol of the asset contract, typically a short-form name or abbreviation.',
   })
-  collectionSymbol: string | null;
+  contractSymbol: string | null;
 
   @Field(() => String, {
     nullable: true,
-    description: 'A description of the asset collection.',
+    description: 'A description of the asset contract.',
   })
-  collectionDescription: string | null;
+  contractDescription: string | null;
 
   @Field(() => Boolean, {
     nullable: false,

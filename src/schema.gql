@@ -86,10 +86,10 @@ type MetadataImageEntity {
   url: String!
 
   """The width of the image in pixels."""
-  width: Float!
+  width: Float
 
   """The height of the image in pixels."""
-  height: Float!
+  height: Float
 
   """The type of the image: profile, background, etc."""
   type: String
@@ -127,7 +127,7 @@ type AddressEntity {
   """The version of the interface."""
   interfaceVersion: String
 
-  """The type of the contract. E.g. asset, collection, profile, etc."""
+  """The type of the contract. E.g. asset, contract, profile, etc."""
   type: String
 
   """The name of the entity."""
@@ -215,7 +215,7 @@ type AddressPagination {
   results: [AddressEntity!]
 }
 
-type CollectionTokenEntity {
+type ContractTokenEntity {
   """The unique address associated with the entity."""
   address: ID!
 
@@ -243,16 +243,16 @@ type CollectionTokenEntity {
   """A description of the entity."""
   description: String
 
-  """The name of the asset collection."""
-  collectionName: String
+  """The name of the asset contract."""
+  contractName: String
 
   """
-  The symbol of the asset collection, typically a short-form name or abbreviation.
+  The symbol of the asset contract, typically a short-form name or abbreviation.
   """
-  collectionSymbol: String
+  contractSymbol: String
 
-  """A description of the asset collection."""
-  collectionDescription: String
+  """A description of the asset contract."""
+  contractDescription: String
 
   """Indicates whether the entity is a non-fungible token (NFT)."""
   isNFT: Boolean!
@@ -261,16 +261,16 @@ type CollectionTokenEntity {
   latestKnownOwner: String
 
   """An array of images associated with the entity."""
-  images: [MetadataImageEntity]!
+  images(type: String): [MetadataImageEntity]!
 
   """An array of related links with titles and URLs."""
   links: [MetadataLinkEntity]!
 
   """An array of assets associated with the entity."""
-  assets: [MetadataAssetEntity]!
+  assets(fileType: String): [MetadataAssetEntity]!
 }
 
-type CollectionTokensPagination {
+type ContractTokensPagination {
   """Count of the total number of items available"""
   count: Int!
 
@@ -284,7 +284,7 @@ type CollectionTokensPagination {
   totalPages: Int!
 
   """Array with the results."""
-  results: [CollectionTokenEntity!]
+  results: [ContractTokenEntity!]
 }
 
 type Query {
@@ -292,7 +292,7 @@ type Query {
     """The search input, can be a complete or incomplete name, address"""
     input: String
 
-    """The type of the contract. E.g. asset, collection, profile, etc."""
+    """The type of the contract. E.g. asset, contract, profile, etc."""
     type: String
 
     """The interface code, such as ERC721, ERC1155, etc."""
@@ -312,7 +312,7 @@ type Query {
   ): AddressPagination!
   method(id: String!): MethodEntity
   wrappedTransactions(transactionHash: String!, methodId: String): [WrappedTxEntity]!
-  collectionTokens(
+  contractToken(
     """
     The search input, can be a complete or incomplete name, tokenId, decodedTokenId
     """
@@ -327,11 +327,11 @@ type Query {
     """The version of the interface."""
     interfaceVersion: String
 
-    """The name of the collection."""
-    collectionName: String
+    """The name of the contract."""
+    contractName: String
 
-    """The symbol of the collection."""
-    collectionSymbol: String
+    """The symbol of the contract."""
+    contractSymbol: String
 
     """Indicates whether the entity is a non-fungible token (NFT)."""
     isNFT: Boolean
@@ -341,7 +341,7 @@ type Query {
 
     """The page number to query."""
     page: Int = 1
-  ): CollectionTokensPagination!
+  ): ContractTokensPagination!
   tokenHolders(
     """The address of the holder"""
     holderAddress: String

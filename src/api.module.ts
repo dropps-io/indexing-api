@@ -8,14 +8,14 @@ import { WrappedTxModule } from './resolvers/wrapped-tx/wrapped-tx.module';
 import { MethodModule } from './resolvers/method/method.module';
 import { TokenHolderModule } from './resolvers/token-holder/token-holder.module';
 import { AddressModule } from './resolvers/address/address.module';
-import { CollectionTokenModule } from './resolvers/collection-token/collection-token.module';
+import { ContractTokenModule } from './resolvers/contract-token/contract-token.module';
 
 @Module({
   imports: [
     AddressModule,
     MethodModule,
     WrappedTxModule,
-    CollectionTokenModule,
+    ContractTokenModule,
     TokenHolderModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),

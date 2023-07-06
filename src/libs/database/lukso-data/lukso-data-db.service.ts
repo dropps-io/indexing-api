@@ -33,9 +33,9 @@ const queryBuilder = knex({ client: 'pg' });
 type TokenWithMetadata = ContractTokenTable &
   ContractTable &
   MetadataTable & {
-    collectionName: string | null;
-    collectionDescription: string | null;
-    collectionSymbol: string | null;
+    contractName: string | null;
+    contractDescription: string | null;
+    contractSymbol: string | null;
   };
 
 @Injectable()
@@ -851,8 +851,8 @@ export class LuksoDataDbService implements OnModuleDestroy {
     limit: number,
     offset: number,
     addressInput?: string,
-    collectionName?: string,
-    collectionSymbol?: string,
+    contractName?: string,
+    contractSymbol?: string,
     input?: string,
     interfaceCode?: string,
     interfaceVersion?: string,
@@ -860,8 +860,8 @@ export class LuksoDataDbService implements OnModuleDestroy {
   ): Promise<TokenWithMetadata[]> {
     const query = this.buildTokenSearchQuery(
       addressInput,
-      collectionName,
-      collectionSymbol,
+      contractName,
+      contractSymbol,
       input,
       interfaceCode,
       interfaceVersion,
@@ -873,9 +873,9 @@ export class LuksoDataDbService implements OnModuleDestroy {
         'ct.*',
         'c.*',
         'm1.*',
-        'm2.name as collectionName',
-        'm2.description as collectionDescription',
-        'm2.symbol as collectionSymbol',
+        'm2.name as contractName',
+        'm2.description as contractDescription',
+        'm2.symbol as contractSymbol',
       )
       .orderBy('ct.address', 'asc')
       .orderBy('m2.name', 'asc')
@@ -892,8 +892,8 @@ export class LuksoDataDbService implements OnModuleDestroy {
 
   public async searchTokenWithMetadataCount(
     addressInput?: string,
-    collectionName?: string,
-    collectionSymbol?: string,
+    contractName?: string,
+    contractSymbol?: string,
     input?: string,
     interfaceCode?: string,
     interfaceVersion?: string,
@@ -901,8 +901,8 @@ export class LuksoDataDbService implements OnModuleDestroy {
   ): Promise<number> {
     const query = this.buildTokenSearchQuery(
       addressInput,
-      collectionName,
-      collectionSymbol,
+      contractName,
+      contractSymbol,
       input,
       interfaceCode,
       interfaceVersion,
@@ -918,8 +918,8 @@ export class LuksoDataDbService implements OnModuleDestroy {
 
   private buildTokenSearchQuery(
     addressInput?: string,
-    collectionName?: string,
-    collectionSymbol?: string,
+    contractName?: string,
+    contractSymbol?: string,
     input?: string,
     interfaceCode?: string,
     interfaceVersion?: string,
@@ -941,9 +941,8 @@ export class LuksoDataDbService implements OnModuleDestroy {
         'CONCAT(LOWER(m1.name), ct."tokenId", LOWER(ct."decodedTokenId")) LIKE LOWER(?)',
         [`%${input}%`],
       );
-    if (collectionName) query.whereRaw('LOWER(m2.name) LIKE LOWER(?)', [`%${collectionName}%`]);
-    if (collectionSymbol)
-      query.whereRaw('LOWER(m2.symbol) LIKE LOWER(?)', [`%${collectionSymbol}%`]);
+    if (contractName) query.whereRaw('LOWER(m2.name) LIKE LOWER(?)', [`%${contractName}%`]);
+    if (contractSymbol) query.whereRaw('LOWER(m2.symbol) LIKE LOWER(?)', [`%${contractSymbol}%`]);
     if (interfaceVersion) query.andWhere({ interfaceVersion });
     if (interfaceCode) query.andWhere({ interfaceCode });
     if (owner) query.andWhere('ct.latestKnownOwner', owner);
