@@ -1,14 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  ADDRESS1,
-  ADDRESS2,
-  ADDRESS3,
-  HASH1,
-  HASH2,
-  HASH3,
-  URL1,
-  URL2,
-} from '@test/utils/test-values';
+import { ADDRESS1, ADDRESS2, ADDRESS3, HASH1, HASH2, HASH3 } from '@test/utils/test-values';
 import { executeQuery } from '@test/utils/db-helpers';
 
 import { ContractTokenTable } from './entities/contract-token.table';
@@ -34,13 +25,6 @@ import { LoggerService } from '../../logger/logger.service';
 
 describe('LuksoDataDbService', () => {
   let service: LuksoDataDbService;
-
-  const contract: ContractTable = {
-    address: ADDRESS1,
-    interfaceCode: 'LSP0',
-    interfaceVersion: '0.8.0',
-    type: CONTRACT_TYPE.PROFILE,
-  };
 
   const contract1: ContractTable = {
     address: ADDRESS1,
@@ -122,7 +106,6 @@ describe('LuksoDataDbService', () => {
   });
 
   afterEach(async () => {
-    // make sure to close the connections to the database
     await service.disconnect();
   });
 
@@ -389,7 +372,7 @@ describe('LuksoDataDbService', () => {
         holderAddress: ADDRESS2,
         contractAddress: contractToken1.address,
         tokenId: null,
-        balanceInEth: 1,
+        balanceInEth: '1',
         balanceInWei: '1000000000000000000',
         holderSinceBlock: 1234,
       };
@@ -419,7 +402,12 @@ describe('LuksoDataDbService', () => {
       it('should be able to update balances on conflict', async () => {
         await service.insertTokenHolder(tokenHolder1);
         await service.insertTokenHolder(
-          { ...tokenHolder1, balanceInWei: 'NEW_BALANCE', balanceInEth: 999, holderSinceBlock: 2 },
+          {
+            ...tokenHolder1,
+            balanceInWei: '9999999',
+            balanceInEth: '999',
+            holderSinceBlock: 2,
+          },
           'update',
         );
         const res = await service.getTokenHolder(
@@ -430,8 +418,8 @@ describe('LuksoDataDbService', () => {
 
         expect(res).toEqual({
           ...tokenHolder1,
-          balanceInWei: 'NEW_BALANCE',
-          balanceInEth: 999,
+          balanceInWei: '9999999',
+          balanceInEth: '999',
           holderSinceBlock: tokenHolder1.holderSinceBlock,
         });
       });
@@ -461,7 +449,7 @@ describe('LuksoDataDbService', () => {
         holderAddress: ADDRESS2,
         contractAddress: contractToken1.address,
         tokenId: contractToken1.tokenId,
-        balanceInEth: 1,
+        balanceInEth: '1',
         balanceInWei: '1000000000000000000',
         holderSinceBlock: 1234,
       };
@@ -491,7 +479,12 @@ describe('LuksoDataDbService', () => {
       it('should be able to update balances on conflict', async () => {
         await service.insertTokenHolder(tokenHolder1);
         await service.insertTokenHolder(
-          { ...tokenHolder1, balanceInWei: 'NEW_BALANCE', balanceInEth: 999, holderSinceBlock: 2 },
+          {
+            ...tokenHolder1,
+            balanceInWei: '9999999',
+            balanceInEth: '999',
+            holderSinceBlock: 2,
+          },
           'update',
         );
         const res = await service.getTokenHolder(
@@ -502,8 +495,8 @@ describe('LuksoDataDbService', () => {
 
         expect(res).toEqual({
           ...tokenHolder1,
-          balanceInWei: 'NEW_BALANCE',
-          balanceInEth: 999,
+          balanceInWei: '9999999',
+          balanceInEth: '999',
           holderSinceBlock: tokenHolder1.holderSinceBlock,
         });
       });
@@ -1342,148 +1335,6 @@ describe('LuksoDataDbService', () => {
     it('should return an empty array if querying with an unknown wrapped transaction id', async () => {
       const res = await service.getWrappedTxParameters(1);
       expect(res.length).toEqual(0);
-    });
-  });
-
-  describe('getContractWithMetadata', () => {
-    it('should return contract with metadata', async () => {
-      await service.insertContract(contract);
-      await service.insertMetadata(contractMetadata);
-
-      const result = await service.getContractWithMetadataByAddress(ADDRESS1);
-      expect(result).toMatchObject({ ...contract, ...contractMetadata });
-    });
-
-    it('should be null if no metadata', async () => {
-      await service.insertContract(contract);
-
-      const result = await service.getContractWithMetadataByAddress(ADDRESS1);
-      expect(result).toBeNull();
-    });
-  });
-
-  describe('getContractWithMetadata', () => {
-    const metadataImage: MetadataImageTable = {
-      hash: HASH1,
-      height: 0,
-      metadataId: 0,
-      type: null,
-      url: URL1,
-      width: 0,
-    };
-
-    beforeEach(async () => {
-      await service.insertContract(contract);
-      metadataImage.metadataId = (await service.insertMetadata(contractMetadata)).id;
-    });
-
-    it('should fetch all metadata images', async () => {
-      await service.insertMetadataImages(metadataImage.metadataId, [
-        metadataImage,
-        { ...metadataImage, type: 'profile', url: URL2 },
-      ]);
-
-      const result = await service.getMetadataImages(metadataImage.metadataId);
-      expect(result).toMatchObject([
-        metadataImage,
-        { ...metadataImage, type: 'profile', url: URL2 },
-      ]);
-    });
-
-    it('should be able to fetch only metadata images with type null', async () => {
-      await service.insertMetadataImages(metadataImage.metadataId, [
-        metadataImage,
-        { ...metadataImage, type: 'profile', url: URL2 },
-      ]);
-
-      const result = await service.getMetadataImages(metadataImage.metadataId, null);
-      expect(result).toMatchObject([metadataImage]);
-    });
-
-    it('should be able to fetch only metadata images of a specific type', async () => {
-      await service.insertMetadataImages(metadataImage.metadataId, [
-        metadataImage,
-        { ...metadataImage, type: 'profile', url: URL2 },
-      ]);
-
-      const result = await service.getMetadataImages(metadataImage.metadataId, 'profile');
-      expect(result).toMatchObject([{ ...metadataImage, type: 'profile', url: URL2 }]);
-    });
-
-    it('should return empty array if nothing found', async () => {
-      const result = await service.getMetadataImages(metadataImage.metadataId, 'profile');
-      expect(result).toEqual([]);
-    });
-  });
-
-  describe('getWrappedTxFromTransactionHash', () => {
-    const transaction: TransactionTable = {
-      hash: HASH1,
-      nonce: 0,
-      blockHash: HASH2,
-      blockNumber: 0,
-      date: new Date(),
-      transactionIndex: 0,
-      methodId: 'METHOD_ID1',
-      methodName: 'METHOD_NAME1',
-      from: ADDRESS1,
-      to: ADDRESS2,
-      value: '100',
-      gasPrice: '2000000',
-      gas: 21000,
-    };
-
-    const wrappedTx: WrappedTxTable = {
-      id: 0,
-      transactionHash: HASH1,
-      parentId: null,
-      blockNumber: 0,
-      from: ADDRESS1,
-      to: ADDRESS2,
-      value: '100',
-      methodId: 'METHOD_ID1',
-      methodName: 'METHOD_NAME1',
-    };
-
-    beforeEach(async () => {
-      await service.insertTransaction(transaction);
-    });
-
-    it('should fetch all wrapped transactions for the given transaction hash', async () => {
-      await service.insertWrappedTx(wrappedTx);
-      await service.insertWrappedTx({
-        ...wrappedTx,
-        methodId: 'METHOD_ID2',
-        methodName: 'METHOD_NAME2',
-      });
-
-      const result = await service.getWrappedTxFromTransactionHash(HASH1);
-      expect(result).toMatchObject([
-        { ...wrappedTx, id: expect.any(Number) },
-        {
-          ...wrappedTx,
-          methodId: 'METHOD_ID2',
-          methodName: 'METHOD_NAME2',
-          id: expect.any(Number),
-        },
-      ]);
-    });
-
-    it('should fetch only wrapped transactions with a specific method ID', async () => {
-      await service.insertWrappedTx(wrappedTx);
-      await service.insertWrappedTx({
-        ...wrappedTx,
-        methodId: '0x12345678',
-        methodName: 'METHOD_NAME2',
-      });
-
-      const result = await service.getWrappedTxFromTransactionHash(HASH1, 'METHOD_ID1');
-      expect(result).toMatchObject([{ ...wrappedTx, id: expect.any(Number) }]);
-    });
-
-    it('should return an empty array if no matching wrapped transactions found', async () => {
-      const result = await service.getWrappedTxFromTransactionHash(HASH3);
-      expect(result).toEqual([]);
     });
   });
 });

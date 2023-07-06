@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import winston from 'winston';
 import { ObjectType } from '@nestjs/graphql';
 
 import { TokenHolderEntity } from './entities/token-holder.entity';

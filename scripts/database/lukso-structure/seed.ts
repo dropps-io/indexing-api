@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS ${DB_STRUCTURE_TABLE.ERC725Y_SCHEMA} (
 	"keyType" VARCHAR(20) NOT NULL,
 	"valueType" VARCHAR(20) NOT NULL,
 	"valueContent" VARCHAR(20) NOT NULL,
+	"createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	PRIMARY KEY ("key")
 )`);
 
@@ -61,6 +62,7 @@ CREATE TABLE IF NOT EXISTS ${DB_STRUCTURE_TABLE.CONTRACT_INTERFACE} (
 	"name" VARCHAR(40) NOT NULL,
 	"version" VARCHAR(10),
 	"type" ${DB_STRUCTURE_TYPE.CONTRACT_TYPE},
+	"createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	PRIMARY KEY ("id")
 )`);
 
@@ -70,6 +72,7 @@ CREATE TABLE IF NOT EXISTS ${DB_STRUCTURE_TABLE.METHOD_INTERFACE} (
   "hash" CHAR(66) NOT NULL,
 	"name" VARCHAR(40) NOT NULL,
 	"type" ${DB_STRUCTURE_TYPE.METHOD_TYPE} NOT NULL,
+	"createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	PRIMARY KEY ("id")
 )`);
 
@@ -80,7 +83,8 @@ CREATE TABLE IF NOT EXISTS ${DB_STRUCTURE_TABLE.METHOD_PARAMETER} (
 	"type" VARCHAR(40) NOT NULL,
 	"indexed" BOOLEAN NOT NULL,
 	"position" INTEGER NOT NULL,
-	FOREIGN KEY("methodId") REFERENCES ${DB_STRUCTURE_TABLE.METHOD_INTERFACE}("id") ON DELETE CASCADE
+	FOREIGN KEY("methodId") REFERENCES ${DB_STRUCTURE_TABLE.METHOD_INTERFACE}("id") ON DELETE CASCADE,
+	UNIQUE ("methodId", "position")
 )`);
 
   await client.query(`
@@ -94,10 +98,14 @@ CREATE TABLE IF NOT EXISTS ${DB_STRUCTURE_TABLE.CONFIG} (
 	)`);
 
   try {
-    await client.query(`INSERT INTO ${DB_STRUCTURE_TABLE.CONFIG} DEFAULT VALUES`);
+    const { rowCount } = await client.query(`SELECT * FROM ${DB_STRUCTURE_TABLE.CONFIG}`);
+    if (rowCount === 0)
+      await client.query(`INSERT INTO ${DB_STRUCTURE_TABLE.CONFIG} DEFAULT VALUES`);
+    // eslint-disable-next-line no-console
+    else console.log('Config already initialized');
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log('Config already initialized');
+    console.error(e);
   }
 
   await client.end();

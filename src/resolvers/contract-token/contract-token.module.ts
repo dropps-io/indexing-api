@@ -9,4 +9,4 @@ import { LuksoDataDbModule } from '../../libs/database/lukso-data/lukso-data-db.
   providers: [ContractTokenResolver, ContractTokenService],
   exports: [ContractTokenResolver],
 })
-export class CollectionTokenModule {}
+export class ContractTokenModule {}

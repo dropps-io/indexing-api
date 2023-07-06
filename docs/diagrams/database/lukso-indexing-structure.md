@@ -6,6 +6,7 @@ Table erc725y_schema {
   keyType varchar
   valueType varchar
   valueContent varchar
+  createdAt date
 }
 
 Table contract_interface {
@@ -13,6 +14,7 @@ Table contract_interface {
   code varchar
   name varchar
   type varchar
+  createdAt date
 }
 
 Table method_interface {
@@ -20,6 +22,7 @@ Table method_interface {
   hash char(66)
   name varchar
   type varchar
+  createdAt date
 }
 
 Table method_parameter {

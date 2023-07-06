@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 
 @ArgsType()
-export class FindCollectionTokenArgs {
+export class FindContractTokenArgs {
   @Field(() => String, {
     nullable: true,
     description: 'The search input, can be a complete or incomplete name, tokenId, decodedTokenId',
@@ -23,11 +23,11 @@ export class FindCollectionTokenArgs {
   @Field(() => String, { nullable: true, description: 'The version of the interface.' })
   interfaceVersion?: string;
 
-  @Field(() => String, { nullable: true, description: 'The name of the collection.' })
-  collectionName?: string;
+  @Field(() => String, { nullable: true, description: 'The name of the contract.' })
+  contractName?: string;
 
-  @Field(() => String, { nullable: true, description: 'The symbol of the collection.' })
-  collectionSymbol?: string;
+  @Field(() => String, { nullable: true, description: 'The symbol of the contract.' })
+  contractSymbol?: string;
 
   @Field(() => Boolean, {
     nullable: true,
