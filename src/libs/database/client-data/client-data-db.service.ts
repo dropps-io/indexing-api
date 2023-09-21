@@ -6,7 +6,7 @@ import {LoggerService} from "../../logger/logger.service";
 import {CLIENT_DATA_CONNECTION_STRING} from "../client-data/config";
 
 @Injectable()
-export class ApiUsageService implements OnModuleDestroy {
+export class ClientDataDbService implements OnModuleDestroy {
     protected readonly client: Pool & {
         query: (query: string, values?: any[]) => Promise<QueryResult<any>>;
     };

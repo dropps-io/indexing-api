@@ -1,41 +1,25 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@ObjectType()
+@Entity('api_usage')
 export class ApiUsageEntity {
-  @Field(() => ID, {
-    nullable: false,
-    description:
-      'A unique identifier for each ip that makes a request (assuming a serial primary key)',
-  })
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Field(() => Number, {nullable: false,
-    description: 'Stores the client IP address'
-  })
-    client_ip: number;
+  @Column()
+  client_ip: string;
 
-    @Field(() => String, {nullable: true,
-        description: 'Field to store the country name or code'
-    })
-    country: string;
+  @Column()
+  user_agent: string;
 
-    @Field(() => String, {nullable: true,
-        description: 'Field to store the User-Agent header'
-    })
-    user_agent: string;
+  @Column()
+  country: string;
 
-    @Field(() => String, {nullable: true,
-        description: 'Field for storing the device identifier.'
-    })
-    device_id: string;
+  @Column()
+  device_id: string;
 
-    @Field(() => Number, {nullable: false,
-        description: 'Field to store the number of requests made by the client'
-    })
-    request_count: number;
+  @Column()
+  request_count: number;
 
-    @Field(() => Number, {nullable: false,
-        description: ' Field to store the remaining rate limit quota for the client'
-    })
-    rate_limit_quota: number;
+  @Column()
+  rate_limit_quota: number;
 }

@@ -9,10 +9,12 @@ import { MethodModule } from './resolvers/method/method.module';
 import { TokenHolderModule } from './resolvers/token-holder/token-holder.module';
 import { AddressModule } from './resolvers/address/address.module';
 import { ContractTokenModule } from './resolvers/contract-token/contract-token.module';
+import { ApiUsageModule } from "./resolvers/apiUsage/apiUsage.module";
 
 @Module({
   imports: [
     AddressModule,
+    ApiUsageModule,
     MethodModule,
     WrappedTxModule,
     ContractTokenModule,

@@ -18,10 +18,10 @@
     "test:cov": "jest --coverage  --runInBand",
     "seed-lukso-structure-db": "ts-node -r tsconfig-paths/register scripts/database/lukso-structure/index.ts",
     "seed-lukso-data-db": "ts-node -r tsconfig-paths/register scripts/database/lukso-data/index.ts",
+    "seed-client-data-db": "ts-node -r tsconfig-paths/register scripts/database/client-data/index.ts",
     "seed:all": "npm run seed-lukso-structure-db && npm run seed-lukso-data-db"
   },
   "dependencies": {
-    "@apollo/server": "^4.9.3",
     "@as-integrations/fastify": "^2.1.0",
     "@nestjs/apollo": "^11.0.4",
     "@nestjs/common": "^10.2.4",
@@ -30,6 +30,7 @@
     "@nestjs/graphql": "^11.0.4",
     "@nestjs/platform-fastify": "^10.2.5",
     "@nestjs/swagger": "^7.1.10",
+    "@nestjs/typeorm": "^10.0.0",
     "apollo-server-express": "^3.12.1",
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
@@ -39,6 +40,8 @@
     "knex": "^2.4.2",
     "pg": "^8.11.0",
     "pg-format": "^1.0.4",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.17",
     "winston": "^3.8.2"
   },
   "devDependencies": {
