@@ -31,5 +31,9 @@ CREATE TABLE IF NOT EXISTS ${DB_DATA_TABLE.API_USAGE} (
   "rate_limit_quota" INTEGER NOT NULL,
 	PRIMARY KEY ("id")
 )`);
+
+  await client.end();
+  // eslint-disable-next-line no-console
+  console.log('client-data seed script successfully executed');
 }
 

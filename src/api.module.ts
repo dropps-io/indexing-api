@@ -10,6 +10,7 @@ import { TokenHolderModule } from './resolvers/token-holder/token-holder.module'
 import { AddressModule } from './resolvers/address/address.module';
 import { ContractTokenModule } from './resolvers/contract-token/contract-token.module';
 import { ApiUsageModule } from "./resolvers/apiUsage/apiUsage.module";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
 @Module({
   imports: [
@@ -25,6 +26,15 @@ import { ApiUsageModule } from "./resolvers/apiUsage/apiUsage.module";
       playground: true,
       introspection: true,
     }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      username: 'postgres',
+      password: "w1far022",
+      database: 'clientdata',
+      entities: ["dist/**/*.entity{.ts,.js}"],
+      synchronize: true,
+    })
   ],
   controllers: [HealthController],
   providers: [],
